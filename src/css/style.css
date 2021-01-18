@@ -2,12 +2,24 @@
   display: flex;
 }
 
+.flex-column {
+  flex-direction: column;
+}
+
 .align-items-center {
   align-items: center;
 }
 
+.align-items-start {
+  align-items: flex-start;
+}
+
 .justify-items-center {
   justify-items: center;
+}
+
+.justify-items-between {
+  justify-content: space-between;
 }
 
 .ml-auto {
@@ -19,36 +31,83 @@
 }
 
 .mx-auto {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Headers styles */
-
+/* Header styles */
 .header .brand-logo {
   position: static;
 }
 
-.header .currency-select {
-    width: 120px;
+.header .favorites {
+  margin-left: 20px;
 }
 
 .header .currency-select input.select-dropdown {
-    margin: 0;
-    color: #fff;
-    border-bottom: none;
+  margin: 0;
+  color: #fff;
+  border-bottom: none;
 }
 
 .header .currency-select input.select-dropdown:focus {
-    border-bottom: none;
+  border-bottom: none;
+}
+
+.header .currency-select {
+  width: 120px;
 }
 
 .header .currency-select .caret {
-    fill: #fff;
+  fill: #fff;
 }
 
 .header .brand-logo {
-    font-size:1.5rem
+  font-size: 1.5rem;
+}
+
+.favorites .dropdown-content {
+  width: 400px !important;
+  color: #000;
+}
+
+.favorites .favorite-item-airline-img {
+  max-width: 100px;
+  margin-right: 10px;
+}
+
+.favorites .favorite-item-info {
+  flex-grow: 1;
+  padding: 10px;
+  line-height: 1;
+  height: auto;
+}
+
+.favorites .favorite-item-info .material-icons {
+  line-height: 1;
+  height: auto;
+}
+
+.favorites .favorite-item-destination {
+  border-bottom: 1px dashed gray;
+  margin-bottom: 5px;
+}
+
+.favorites .ticket-price {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.favorites .ticket-additional-info {
+  font-size: 12px;
+}
+
+.favorites .ticket-time-departure {
+  font-size: 14px;
+}
+
+.favorites .delete-favorite {
+  margin-top: 10px;
 }
 
 .ticket-card {
@@ -97,6 +156,10 @@
   font-weight: bold;
 }
 
+.ticket-card .add-favorite {
+  margin-top: 10px;
+}
+
 .tickets-empty-res-msg {
   padding: 10px 15px;
   text-align: center;
@@ -104,4 +167,3 @@
   font-weight: bold;
   font-size: 18px;
 }
-
