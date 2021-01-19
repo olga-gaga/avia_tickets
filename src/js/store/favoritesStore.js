@@ -1,9 +1,9 @@
 class FaveTickets{
     constructor(){
-        this._tickets = null;
+        this._tickets = JSON.parse(sessionStorage.getItem('favourites')) || {};
     }
 
-    set tickets(tickets) {
+    /*set tickets(tickets) {
         if(!tickets.length){
             console.error("Передайте в функцию массив");
             return;
@@ -12,21 +12,33 @@ class FaveTickets{
             acc[ticket.flight_number] = ticket;
             return acc;
         }, {});
-    }
+    }*/
 
     get tickets(){
-        return this._tickets;
+        //this._tickets = JSON.parse(sessionStorage('favourites'));
+        return Object.values(this._tickets);
     }
 
     addTicket(ticket) {
-        this._tickets.push(ticket);
+        if(!this._tickets.hasOwnProperty(ticket.mark)) {
+            this._tickets[ticket.mark] = ticket;
+            //console.log(this._tickets);
+            sessionStorage.setItem('favourites', JSON.stringify(this._tickets));
+        }
+        
     }
 
 
-    deleteFromFavorites(flight_number){
-        if(Object.keys(this._tickets).indexOf(flight_number) >= 0) {
-            delete this._tickets[flight_number];
+    deleteFromFavorites(mark){
+        if(this._tickets.hasOwnProperty(mark)) {
+            console.log(this._tickets[mark]);
+            delete this._tickets[mark];
+            console.log(this._tickets);
+            sessionStorage.setItem('favourites', JSON.stringify(this._tickets));
+            return true;
         }
+        console.log(this._tickets);
+        return false;
     }
 }
 

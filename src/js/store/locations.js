@@ -64,8 +64,9 @@ class Locations {
 
     serializeTickets(tickets) {
         return Object.values(tickets)
-            .map( (ticket) => {
-                return {
+            .reduce( (acc, ticket) => {
+                const mark = `${ticket.flight_number}-${this.formatDate(ticket.departure_at, 'T')}-${this.formatDate(ticket.return_at, 'T')}`;
+                acc[mark] = {
                     ...ticket,
                     origin_name:this.getCityNameByCode(ticket.origin),
                     destination_name: this.getCityNameByCode(ticket.destination),
@@ -73,9 +74,10 @@ class Locations {
                     airline_name: this.getAirlineNameByCode(ticket.airline),
                     departure_at: this.formatDate(ticket.departure_at, 'dd MMM yyyy hh:mm'),
                     return_at: this.formatDate(ticket.return_at, 'dd MMM yyyy hh:mm'),
-
+                    mark: mark,
                 };
-            } );
+                return acc;
+            }, {} );
     }
 
     getCountryNameByCityCode(code) {
@@ -97,6 +99,14 @@ class Locations {
 
     getAirlineLogoByCode(code) {
         return this.airlines[code] ? this.airlines[code].logo : '';
+    }
+
+    getTicketByMark(mark){
+        if(this.lastSearch.hasOwnProperty(mark)){
+            return this.lastSearch[mark];
+        }
+        console.error('Билет не найден');
+        
     }
 
    async fetchTickets(params){
