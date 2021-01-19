@@ -19,9 +19,12 @@ class FaveTickets{
         return Object.values(this._tickets);
     }
 
-    addTicket(ticket) {
+    addTicket(ticket, currency) {
         if(!this._tickets.hasOwnProperty(ticket.mark)) {
-            this._tickets[ticket.mark] = ticket;
+            this._tickets[ticket.mark] = {
+                ...ticket,
+                currency: currency,
+            };
             //console.log(this._tickets);
             sessionStorage.setItem('favourites', JSON.stringify(this._tickets));
         }

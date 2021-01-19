@@ -3,8 +3,9 @@ import './plugins';
 import locations from './store/locations';
 import formUI from './views/form';
 import currencyUI from './views/currency';
-import TicketsUI from './views/tickets';
+import {ticketUI} from './views/tickets';
 import faveTickets from './store/favoritesStore';
+import faveTicketsUI from './views/favouritesView';
 
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initApp() {
         await locations.init();
         formUI.setAutocompliteData(locations.shortCitiesList);
+        faveTicketsUI.renderTickets(faveTickets.tickets);
     }
 
     async function onFormSubmit(){
@@ -59,19 +61,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('lastSearch: ', locations.lastSearch);
 
-        const ticketsUI = new TicketsUI(currencyUI, '.tickets-sections .row');
-        ticketsUI.renderTickets(locations.lastSearch, TicketsUI.ticketTemplate);
+        //const ticketsUI = new TicketsUI(currencyUI, '.tickets-sections .row');
+        ticketUI.renderTickets(locations.lastSearch);
     }
 
     function onAddFavouriteHandler(button) {
+        const currency = currencyUI.currencyValue;
         const parent = button.closest(".card");
         const mark = parent.dataset.mark;
         console.log(mark);
         const ticket = locations.getTicketByMark(mark);
         console.log(ticket);
-        faveTickets.addTicket(ticket);
-        const faveTicketsUI = new TicketsUI(currencyUI, '.dropdown-content');
-        faveTicketsUI.renderTickets(faveTickets.tickets, TicketsUI.faveTicketTemplate);
+        faveTickets.addTicket(ticket, currency);
+        //const faveTicketsUI = new TicketsUI(currencyUI, '.dropdown-content');
+        //faveTicketsUI.renderTickets(faveTickets.tickets, TicketsUI.faveTicketTemplate);*/
+        faveTicketsUI.renderTickets(faveTickets.tickets);
     }
 
     function onDeleteFavouriteHandler(button){

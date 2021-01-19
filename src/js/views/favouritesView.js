@@ -1,19 +1,45 @@
-
-class FaveTicketsUI{
-    constructor(){
-        this.container = document.querySelector("dropdown1");
+import currencyUI from './currency';
+class FaveTicketsUI /*extends TicketsUI*/ {
+    constructor(currency, selector){
+        this.container = document.querySelector(selector); 
+        this.getCurrencySymbol = currency.getCurrencySymbol.bind(currency);
     }
-    
-    renderFaveTickets(tickets) {
+
+    renderTickets(tickets){
         this.clearContainer();
+        const ticketsArr = Object.values(tickets);
 
+        if(!Array.isArray(ticketsArr) || !ticketsArr.length){
+            this.showEmptyMessage();
+            return;
+        }
+
+        const fragment = this.createTicketsList(ticketsArr);
+
+        this.container.insertAdjacentHTML('afterBegin', fragment);
     }
 
-    static faveTicketTemplate() {
-        return `
-            <div class="favorite-item  d-flex align-items-start">
+    createTicketsList(tickets){
+      //const currency = this.getCurrencySymbol();
+      return tickets
+        .reduce( (acc, ticket) => {
+            const currency = this.getCurrencySymbol(ticket.currency)
+            acc += FaveTicketsUI.faveTicketTemplate(ticket, currency);
+            return acc;
+        }, '');
+    }
+
+    clearContainer() {
+        this.container.innerHTML = '';
+    }
+
+
+    static faveTicketTemplate(ticket, currency) {
+     
+      return `
+          <div class="favorite-item d-flex align-items-start" data-mark="${ticket.mark}">
             <img
-                src="http://pics.avs.io/200/200/${ticket.airline_logo}.png"
+                src="${ticket.airline_logo}"
                 class="favorite-item-airline-img"
             />
             <div class="favorite-item-info d-flex flex-column">
@@ -37,6 +63,9 @@ class FaveTicketsUI{
                 </div>
                 <a class="waves-effect waves-light btn-small pink darken-3 delete-favorite ml-auto">Delete</a>
             </div>
-        </div>`;
-    }
+          </div>`;
+  }
 }
+
+const faveTickets = new FaveTicketsUI(currencyUI, '.dropdown-content');
+export default faveTickets;

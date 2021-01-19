@@ -1,11 +1,11 @@
-//import currencyUI from './currency';
-export default class TicketsUI{
+import currencyUI from './currency';
+export class TicketsUI{
     constructor(currency, selector){
         this.container = document.querySelector(selector); 
-        this.getCurrencySymbol = currency.getCurrencySymbolFromForm.bind(currency);
+        this.getCurrencySymbol = currency.getCurrencySymbol.bind(currency);
     }
 
-    renderTickets(tickets, template){
+    renderTickets(tickets){
         this.clearContainer();
         const ticketsArr = Object.values(tickets);
 
@@ -14,16 +14,16 @@ export default class TicketsUI{
             return;
         }
 
-        const fragment = this.createTicketsList(ticketsArr, template);
+        const fragment = this.createTicketsList(ticketsArr);
 
         this.container.insertAdjacentHTML('afterBegin', fragment);
     }
 
-    createTicketsList(tickets, ticketTemplate){
+    createTicketsList(tickets){
       const currency = this.getCurrencySymbol();
       return tickets
         .reduce( (acc, ticket) => {
-          acc += ticketTemplate(ticket, currency);
+          acc += TicketsUI.ticketTemplate(ticket, currency);
           return acc;
         }, '');
     }
@@ -115,4 +115,4 @@ export default class TicketsUI{
   }
 }
 
-//export const ticketUI = new TicketsUI(currencyUI);
+export const ticketUI = new TicketsUI(currencyUI, '.tickets-sections .row');

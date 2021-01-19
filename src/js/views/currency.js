@@ -11,18 +11,20 @@ class CurrencyUI {
         return this.currency.value;
     }
 
-    getCurrencySymbolFromForm(){
-        console.log(this.currencyValue);
+    getCurrencySymbol(code){
+        if(code && this.dictionary.hasOwnProperty(code)) {
+            return this.dictionary[code];
+        }
         return this.dictionary[this.currencyValue];
     }
 
-    getCurrencySymbolByCode(code){
+    /*getCurrencySymbolByCode(code){
         if(this.dictionary.hasOwnProperty(code)){
             return this.dictionary[code];
         }
         console.error('В словаре нет такой валюты');
         
-    }
+    }*/
 }
 
 const currencyUI = new CurrencyUI();
