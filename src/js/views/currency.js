@@ -11,9 +11,10 @@ class CurrencyUI {
         return this.currency.value;
     }
 
-    getCurrencySymbol(){
-        console.log(this.currencyValue);
-        return this.dictionary[this.currencyValue];
+    getCurrencySymbol(code){
+        if(code && this.dictionary.hasOwnProperty(code)) {
+            return this.dictionary[code];
+        }
     }
 }
 
