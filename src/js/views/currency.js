@@ -17,14 +17,6 @@ class CurrencyUI {
         }
         return this.dictionary[this.currencyValue];
     }
-
-    /*getCurrencySymbolByCode(code){
-        if(this.dictionary.hasOwnProperty(code)){
-            return this.dictionary[code];
-        }
-        console.error('В словаре нет такой валюты');
-        
-    }*/
 }
 
 const currencyUI = new CurrencyUI();

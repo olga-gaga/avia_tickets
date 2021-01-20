@@ -3,19 +3,7 @@ class FaveTickets{
         this._tickets = JSON.parse(sessionStorage.getItem('favourites')) || {};
     }
 
-    /*set tickets(tickets) {
-        if(!tickets.length){
-            console.error("Передайте в функцию массив");
-            return;
-        }
-        this._tickets = tickets.reduce( (acc, ticket) => {
-            acc[ticket.flight_number] = ticket;
-            return acc;
-        }, {});
-    }*/
-
     get tickets(){
-        //this._tickets = JSON.parse(sessionStorage('favourites'));
         return Object.values(this._tickets);
     }
 
@@ -25,7 +13,6 @@ class FaveTickets{
                 ...ticket,
                 currency: currency,
             };
-            //console.log(this._tickets);
             sessionStorage.setItem('favourites', JSON.stringify(this._tickets));
         }
         
@@ -34,13 +21,10 @@ class FaveTickets{
 
     deleteFromFavorites(mark){
         if(this._tickets.hasOwnProperty(mark)) {
-            console.log(this._tickets[mark]);
             delete this._tickets[mark];
-            console.log(this._tickets);
             sessionStorage.setItem('favourites', JSON.stringify(this._tickets));
             return true;
         }
-        console.log(this._tickets);
         return false;
     }
 }

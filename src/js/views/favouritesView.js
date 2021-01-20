@@ -1,26 +1,22 @@
 import currencyUI from './currency';
-class FaveTicketsUI /*extends TicketsUI*/ {
+import { TicketsUI } from './tickets';
+class FaveTicketsUI extends TicketsUI{
     constructor(currency, selector){
-        this.container = document.querySelector(selector); 
-        this.getCurrencySymbol = currency.getCurrencySymbol.bind(currency);
+        super(currency, selector);
     }
 
     renderTickets(tickets){
-        this.clearContainer();
+        super.clearContainer();
         const ticketsArr = Object.values(tickets);
 
-        if(!Array.isArray(ticketsArr) || !ticketsArr.length){
+        if(!ticketsArr.length){
             this.showEmptyMessage();
             return;
         }
-
-        const fragment = this.createTicketsList(ticketsArr);
-
-        this.container.insertAdjacentHTML('afterBegin', fragment);
+        super.addFragment(tickets, this.createTicketsList.bind(this));
     }
 
     createTicketsList(tickets){
-      //const currency = this.getCurrencySymbol();
       return tickets
         .reduce( (acc, ticket) => {
             const currency = this.getCurrencySymbol(ticket.currency)
@@ -29,13 +25,19 @@ class FaveTicketsUI /*extends TicketsUI*/ {
         }, '');
     }
 
-    clearContainer() {
-        this.container.innerHTML = '';
+    showEmptyMessage() {
+        const template = FaveTicketsUI.emptyMessageTemplate();
+        this.container.insertAdjacentHTML('afterBegin', template);
     }
 
+    static emptyMessageTemplate() {
+        return `
+            <div class="favorite-item d-flex align-items-start favorites-empty-res-msg">
+                У Вас нет избранных билетов.
+            </div>`;
+    }
 
     static faveTicketTemplate(ticket, currency) {
-     
       return `
           <div class="favorite-item d-flex align-items-start" data-mark="${ticket.mark}">
             <img

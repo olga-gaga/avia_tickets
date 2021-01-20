@@ -110,6 +110,14 @@
   margin-top: 10px;
 }
 
+.favorites-empty-res-msg {
+  padding: 10px 15px;
+  text-align: center;
+  background: whitesmoke;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 .ticket-card {
   padding: 10px 15px;
 }
@@ -167,3 +175,4 @@
   font-weight: bold;
   font-size: 18px;
 }
+

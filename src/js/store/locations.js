@@ -13,20 +13,21 @@ class Locations {
     }
 
     async init() {
-        const response = await Promise.all([
-            this.api.countries(),
-            this.api.cities(),
-            this.api.airlines(),
-        ]);
-
-        const [countries, cities, airlines] = response;
+        //console.log(this.getResponse())
+        const [countries, cities, airlines] = await this.getResponse();
 
         this.countries = this.serializeCountries(countries);
         this.cities = this.serializeCities(cities);
         this.shortCitiesList = this.createShortCitiesList(this.cities);
         this.airlines = this.serializeAirlines(airlines);
-        //console.log(this.cities);
-        return response;
+    }
+
+    async getResponse(){
+        return await Promise.all([
+            this.api.countries(),
+            this.api.cities(),
+            this.api.airlines(),
+        ]);
     }
 
     serializeCountries(countries){
@@ -48,6 +49,7 @@ class Locations {
             const country_name = this.getCountryNameByCityCode(city.country_code);
             city.name = city.name || city.name_translations.en;
             const full_name = `${city.name}, ${country_name}`;
+
             acc[city.code] = {...city, country_name, full_name};
             return acc;
         }, {});
@@ -65,19 +67,27 @@ class Locations {
     serializeTickets(tickets) {
         return Object.values(tickets)
             .reduce( (acc, ticket) => {
-                const mark = `${ticket.flight_number}-${this.formatDate(ticket.departure_at, 'T')}-${this.formatDate(ticket.return_at, 'T')}`;
-                acc[mark] = {
-                    ...ticket,
-                    origin_name:this.getCityNameByCode(ticket.origin),
-                    destination_name: this.getCityNameByCode(ticket.destination),
-                    airline_logo: this.getAirlineLogoByCode(ticket.airline),
-                    airline_name: this.getAirlineNameByCode(ticket.airline),
-                    departure_at: this.formatDate(ticket.departure_at, 'dd MMM yyyy hh:mm'),
-                    return_at: this.formatDate(ticket.return_at, 'dd MMM yyyy hh:mm'),
-                    mark: mark,
-                };
+                const mark = this.getTicketMark(ticket);
+                acc[mark] = this.createTicketEntry(ticket, mark);
                 return acc;
             }, {} );
+    }
+
+    createTicketEntry(ticket, mark){
+        return {
+            ...ticket,
+            origin_name:this.getCityNameByCode(ticket.origin),
+            destination_name: this.getCityNameByCode(ticket.destination),
+            airline_logo: this.getAirlineLogoByCode(ticket.airline),
+            airline_name: this.getAirlineNameByCode(ticket.airline),
+            departure_at: this.formatDate(ticket.departure_at, 'dd MMM yyyy hh:mm'),
+            return_at: this.formatDate(ticket.return_at, 'dd MMM yyyy hh:mm'),
+            mark: mark,
+        };
+    }
+
+    getTicketMark({ flight_number, departure_at, return_at}) {
+        return `${flight_number}-${this.formatDate(departure_at, 'T')}-${this.formatDate(return_at, 'T')}`;
     }
 
     getCountryNameByCityCode(code) {
@@ -112,7 +122,7 @@ class Locations {
    async fetchTickets(params){
        const response = await this.api.prices(params);
        this.lastSearch = this.serializeTickets(response.data);
-       console.log(this.lastSearch);
+       return this.lastSearch;
    }
 }
 

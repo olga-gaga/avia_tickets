@@ -14,9 +14,12 @@ export class TicketsUI{
             return;
         }
 
-        const fragment = this.createTicketsList(ticketsArr);
+        this.addFragment(ticketsArr);
+    }
 
-        this.container.insertAdjacentHTML('afterBegin', fragment);
+    addFragment(ticketsArr, createMethod = this.createTicketsList.bind(this)){
+      const fragment = createMethod(ticketsArr);
+      this.container.insertAdjacentHTML('afterBegin', fragment);
     }
 
     createTicketsList(tickets){
@@ -35,14 +38,13 @@ export class TicketsUI{
     showEmptyMessage() {
         const template = TicketsUI.emptyMessageTemplate();
         this.container.insertAdjacentHTML('afterBegin', template);
+        debugger;
     }
-
-
 
     static emptyMessageTemplate() {
         return `
         <div class="tickets-empty-res-msg">
-        По вашему запросу билетов не найдено.
+          По вашему запросу билетов не найдено.
         </div>`;
     }
 

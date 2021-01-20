@@ -3,7 +3,7 @@ import './plugins';
 import locations from './store/locations';
 import formUI from './views/form';
 import currencyUI from './views/currency';
-import {ticketUI} from './views/tickets';
+import { ticketUI } from './views/tickets';
 import faveTickets from './store/favoritesStore';
 import faveTicketsUI from './views/favouritesView';
 
@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = formUI.form;
     const ticketsSection = document.querySelector('.tickets-sections');
     const dropdownTrigger = document.querySelector('.dropdown-content');
-    console.log(ticketsSection);
-    console.log(dropdownTrigger);
 
     // Events
     form.addEventListener('submit', (e) => {
@@ -44,47 +42,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function onFormSubmit(){
-        const origin = locations.getCityCodeByKey(formUI.originValue);
-        const destination = locations.getCityCodeByKey(formUI.destinationValue);
-        const depart_date = formUI.departDateValue;
-        const return_date = formUI.returnDateValue;
-        const currency = currencyUI.currencyValue;
+        const dataObj = getFormData();
+        const ticketsList = await locations.fetchTickets(dataObj);
+        ticketUI.renderTickets(ticketsList);
+    }
 
-        console.log(origin, destination, depart_date, return_date);
-        await locations.fetchTickets({
-            origin,
-            destination,
-            depart_date,
-            return_date,
-            currency
-        });
-
-        console.log('lastSearch: ', locations.lastSearch);
-
-        //const ticketsUI = new TicketsUI(currencyUI, '.tickets-sections .row');
-        ticketUI.renderTickets(locations.lastSearch);
+    function getFormData() {
+        return{
+            origin: locations.getCityCodeByKey(formUI.originValue),
+            destination: locations.getCityCodeByKey(formUI.destinationValue),
+            depart_date: formUI.departDateValue,
+            return_date: formUI.returnDateValue,
+            currency: currencyUI.currencyValue
+        }
     }
 
     function onAddFavouriteHandler(button) {
         const currency = currencyUI.currencyValue;
         const parent = button.closest(".card");
         const mark = parent.dataset.mark;
-        console.log(mark);
         const ticket = locations.getTicketByMark(mark);
-        console.log(ticket);
         faveTickets.addTicket(ticket, currency);
-        //const faveTicketsUI = new TicketsUI(currencyUI, '.dropdown-content');
-        //faveTicketsUI.renderTickets(faveTickets.tickets, TicketsUI.faveTicketTemplate);*/
         faveTicketsUI.renderTickets(faveTickets.tickets);
     }
 
     function onDeleteFavouriteHandler(button){
-        console.log(button); 
         const parent = button.closest('.favorite-item');
-        console.log(parent);
         const mark = parent.dataset.mark;
         if (faveTickets.deleteFromFavorites(mark)) {
             parent.remove();
+            faveTicketsUI.renderTickets(faveTickets.tickets);
         }
     }
 });
