@@ -15,7 +15,6 @@ class CurrencyUI {
         if(code && this.dictionary.hasOwnProperty(code)) {
             return this.dictionary[code];
         }
-        return this.dictionary[this.currencyValue];
     }
 }
 

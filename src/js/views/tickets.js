@@ -17,16 +17,16 @@ export class TicketsUI{
         this.addFragment(ticketsArr);
     }
 
-    addFragment(ticketsArr, createMethod = this.createTicketsList.bind(this)){
-      const fragment = createMethod(ticketsArr);
+    addFragment(ticketsArr, template = TicketsUI.ticketTemplate.bind(this)){
+      const fragment = this.createTicketsList(ticketsArr, template);
       this.container.insertAdjacentHTML('afterBegin', fragment);
     }
 
-    createTicketsList(tickets){
-      const currency = this.getCurrencySymbol();
+    createTicketsList(tickets, template){
       return tickets
         .reduce( (acc, ticket) => {
-          acc += TicketsUI.ticketTemplate(ticket, currency);
+          const currency = this.getCurrencySymbol(ticket.currency);
+          acc += template(ticket, currency);
           return acc;
         }, '');
     }

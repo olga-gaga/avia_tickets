@@ -58,11 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function onAddFavouriteHandler(button) {
-        const currency = currencyUI.currencyValue;
         const parent = button.closest(".card");
         const mark = parent.dataset.mark;
         const ticket = locations.getTicketByMark(mark);
-        faveTickets.addTicket(ticket, currency);
+        faveTickets.addTicket(ticket);
         faveTicketsUI.renderTickets(faveTickets.tickets);
     }
 

@@ -7,17 +7,13 @@ class FaveTickets{
         return Object.values(this._tickets);
     }
 
-    addTicket(ticket, currency) {
+    addTicket(ticket) {
         if(!this._tickets.hasOwnProperty(ticket.mark)) {
-            this._tickets[ticket.mark] = {
-                ...ticket,
-                currency: currency,
-            };
+            this._tickets[ticket.mark] = ticket;
             sessionStorage.setItem('favourites', JSON.stringify(this._tickets));
         }
         
     }
-
 
     deleteFromFavorites(mark){
         if(this._tickets.hasOwnProperty(mark)) {

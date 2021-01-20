@@ -13,16 +13,7 @@ class FaveTicketsUI extends TicketsUI{
             this.showEmptyMessage();
             return;
         }
-        super.addFragment(tickets, this.createTicketsList.bind(this));
-    }
-
-    createTicketsList(tickets){
-      return tickets
-        .reduce( (acc, ticket) => {
-            const currency = this.getCurrencySymbol(ticket.currency)
-            acc += FaveTicketsUI.faveTicketTemplate(ticket, currency);
-            return acc;
-        }, '');
+        super.addFragment(tickets, FaveTicketsUI.faveTicketTemplate.bind(this));
     }
 
     showEmptyMessage() {
