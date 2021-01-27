@@ -97,6 +97,9 @@ class Locations {
 
     getCityCodeByKey(key){
         const city = Object.values(this.cities).find( (city) => city.full_name === key );
+        if(!city) {
+            return;
+        }
         return city.code;
     }
 
