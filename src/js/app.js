@@ -3,7 +3,7 @@ import './plugins';
 import locations from './store/locations';
 import formUI from './views/form';
 import currencyUI from './views/currency';
-import { ticketUI } from './views/tickets';
+import ticketUI from './views/tickets';
 import faveTickets from './store/favoritesStore';
 import faveTicketsUI from './views/favouritesView';
 
@@ -43,14 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function onFormSubmit(){
         const dataObj = getFormData();
+        if (checkEmptyObj(dataObj)) {
+            return;
+        }
         const ticketsList = await locations.fetchTickets(dataObj);
         ticketUI.renderTickets(ticketsList);
     }
 
     function getFormData() {
         return{
-            origin: locations.getCityCodeByKey(formUI.originValue),
-            destination: locations.getCityCodeByKey(formUI.destinationValue),
+            origin: formUI.originValue && locations.getCityCodeByKey(formUI.originValue),
+            destination: formUI.destinationValue && locations.getCityCodeByKey(formUI.destinationValue),
             depart_date: formUI.departDateValue,
             return_date: formUI.returnDateValue,
             currency: currencyUI.currencyValue
@@ -72,5 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
             parent.remove();
             faveTicketsUI.renderTickets(faveTickets.tickets);
         }
+    }
+
+    function checkEmptyObj (object) {
+        const isEmpty = Object.values(object).some(el => !el);
+        if (isEmpty) {
+            M.toast({html: 'Wrong data'});
+        }
+        return isEmpty;
     }
 });

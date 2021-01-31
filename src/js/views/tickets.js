@@ -9,7 +9,7 @@ export class TicketsUI{
         this.clearContainer();
         const ticketsArr = Object.values(tickets);
 
-        if(!Array.isArray(ticketsArr) || !ticketsArr.length){
+        if (!ticketsArr.length){
             this.showEmptyMessage();
             return;
         }
@@ -17,7 +17,7 @@ export class TicketsUI{
         this.addFragment(ticketsArr);
     }
 
-    addFragment(ticketsArr, template = TicketsUI.ticketTemplate.bind(this)){
+    addFragment(ticketsArr, template = TicketsUI.ticketTemplate){
       const fragment = this.createTicketsList(ticketsArr, template);
       this.container.insertAdjacentHTML('afterBegin', fragment);
     }
@@ -38,7 +38,6 @@ export class TicketsUI{
     showEmptyMessage() {
         const template = TicketsUI.emptyMessageTemplate();
         this.container.insertAdjacentHTML('afterBegin', template);
-        debugger;
     }
 
     static emptyMessageTemplate() {
@@ -117,4 +116,5 @@ export class TicketsUI{
   }
 }
 
-export const ticketUI = new TicketsUI(currencyUI, '.tickets-sections .row');
+const ticketUI = new TicketsUI(currencyUI, '.tickets-sections .row');
+export default ticketUI;

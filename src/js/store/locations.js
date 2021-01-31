@@ -2,7 +2,7 @@ import api from '../services/apiService';
 import { formatDate } from '../helpers/date';
 import currencyUI from '../views/currency';
 class Locations {
-    constructor (api, helpers, currency) {
+    constructor (api, helpers = {}, currency) {
         this.api = api;
         this.countries = null;
         this.cities = null;
@@ -97,6 +97,9 @@ class Locations {
 
     getCityCodeByKey(key){
         const city = Object.values(this.cities).find( (city) => city.full_name === key );
+        if(!city) {
+            return;
+        }
         return city.code;
     }
 
