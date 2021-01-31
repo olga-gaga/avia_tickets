@@ -12,7 +12,6 @@ class FaveTickets{
             this._tickets[ticket.mark] = ticket;
             sessionStorage.setItem('favourites', JSON.stringify(this._tickets));
         }
-        
     }
 
     deleteFromFavorites(mark){

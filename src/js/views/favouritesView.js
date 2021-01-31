@@ -4,30 +4,30 @@ class FaveTicketsUI extends TicketsUI{
     constructor(currency, selector){
         super(currency, selector);
     }
-
+  
     renderTickets(tickets){
-        super.clearContainer();
+        this.clearContainer();
         const ticketsArr = Object.values(tickets);
-
+  
         if(!ticketsArr.length){
             this.showEmptyMessage();
             return;
         }
-        super.addFragment(tickets, FaveTicketsUI.faveTicketTemplate.bind(this));
+        this.addFragment(tickets, FaveTicketsUI.faveTicketTemplate);
     }
-
+  
     showEmptyMessage() {
         const template = FaveTicketsUI.emptyMessageTemplate();
         this.container.insertAdjacentHTML('afterBegin', template);
     }
-
+  
     static emptyMessageTemplate() {
         return `
             <div class="favorite-item d-flex align-items-start favorites-empty-res-msg">
                 У Вас нет избранных билетов.
             </div>`;
     }
-
+  
     static faveTicketTemplate(ticket, currency) {
       return `
           <div class="favorite-item d-flex align-items-start" data-mark="${ticket.mark}">
@@ -58,7 +58,8 @@ class FaveTicketsUI extends TicketsUI{
             </div>
           </div>`;
   }
-}
-
-const faveTickets = new FaveTicketsUI(currencyUI, '.dropdown-content');
-export default faveTickets;
+  }
+  
+  const faveTicketsUI = new FaveTicketsUI(currencyUI, '.dropdown-content');
+  export default faveTicketsUI;
+  

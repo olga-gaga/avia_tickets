@@ -2,7 +2,7 @@ import api from '../services/apiService';
 import { formatDate } from '../helpers/date';
 import currencyUI from '../views/currency';
 class Locations {
-    constructor (api, helpers, currency) {
+    constructor (api, helpers = {}, currency) {
         this.api = api;
         this.countries = null;
         this.cities = null;

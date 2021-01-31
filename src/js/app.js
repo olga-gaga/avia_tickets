@@ -3,7 +3,7 @@ import './plugins';
 import locations from './store/locations';
 import formUI from './views/form';
 import currencyUI from './views/currency';
-import { ticketUI } from './views/tickets';
+import ticketUI from './views/tickets';
 import faveTickets from './store/favoritesStore';
 import faveTicketsUI from './views/favouritesView';
 
