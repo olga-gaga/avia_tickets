@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../config/apiConfig';
 
-class Api {
+export class Api {
     constructor(config) {
         this.url = config.url;
     }
@@ -29,6 +29,7 @@ class Api {
     async prices(params) {
         try{
             const response = await axios.get(`${this.url}/prices/cheap`, {params});
+            console.log(response.data)
             return response.data;
         } catch (error) {
             console.log(error);

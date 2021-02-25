@@ -1,7 +1,7 @@
 import api from '../services/apiService';
 import { formatDate } from '../helpers/date';
 import currencyUI from '../views/currency';
-class Locations {
+export class Locations {
     constructor (api, helpers = {}, currency) {
         this.api = api;
         this.countries = null;
@@ -22,7 +22,7 @@ class Locations {
         this.airlines = this.serializeAirlines(airlines);
     }
 
-    async getResponse(){
+    async getResponse() {
         return await Promise.all([
             this.api.countries(),
             this.api.cities(),
@@ -30,7 +30,10 @@ class Locations {
         ]);
     }
 
-    serializeCountries(countries){
+    serializeCountries(countries) {
+        if(!Array.isArray(countries) ||!countries.length) {
+            return {};
+        }
         return countries.reduce((acc, country) => {
             acc[country.code] = country;
             return acc;
@@ -46,20 +49,22 @@ class Locations {
 
     serializeCities(cities) {
         return cities.reduce((acc, city) => {
-            const country_name = this.getCountryNameByCityCode(city.country_code);
-            city.name = city.name || city.name_translations.en;
-            const full_name = `${city.name}, ${country_name}`;
+            const cityCopy = { ...city };
+            const country_name = this.getCountryNameByCityCode(cityCopy.country_code);
+            cityCopy.name = cityCopy.name || cityCopy.name_translations.en;
+            const full_name = `${cityCopy.name}, ${country_name}`;
 
-            acc[city.code] = {...city, country_name, full_name};
+            acc[cityCopy.code] = {...cityCopy, country_name, full_name};
             return acc;
         }, {});
     }
 
     serializeAirlines(airlines) {
         return airlines.reduce( (acc, airline)=> {
-            airline.logo = `http://pics.avs.io/200/200/${airline.code}.png`;
-            airline.name = airline.name || airline.name_translations.en;
-            acc[airline.code] = airline;
+            const airlineCopy = { ...airline };
+            airlineCopy.logo = `http://pics.avs.io/200/200/${airlineCopy.code}.png`;
+            airlineCopy.name = airlineCopy.name || airlineCopy.name_translations.en;
+            acc[airlineCopy.code] = airlineCopy;
             return acc;
         }, {} )
     }

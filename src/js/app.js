@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (checkEmptyObj(dataObj)) {
             return;
         }
+        console.log(dataObj)
         const ticketsList = await locations.fetchTickets(dataObj);
         ticketUI.renderTickets(ticketsList);
     }
